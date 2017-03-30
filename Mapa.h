@@ -3,21 +3,22 @@
 //
 #include <SFML/Graphics.hpp>
 #include "ObiektNaMapie.h"
-#include <set>
+#include <unordered_map>
 
 
 #ifndef ONLINESURVIVAL_MAPA_H
 #define ONLINESURVIVAL_MAPA_H
 
-#define ROZMIARSTREFY 50;
+
 
 class Mapa {
 public:
+	void dodajObiekt(ObiektNaMapie*);
     void rysuj(sf::RenderWindow*);
     Mapa(float, float);
 protected:
     sf::RenderTexture teksturaMapy;
-    std::set<ObiektNaMapie> obiekty;
+    std::unordered_map<int, ObiektNaMapie*> obiekty;
 };
 
 

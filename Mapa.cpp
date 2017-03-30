@@ -6,10 +6,10 @@
 
 void Mapa::rysuj(sf::RenderWindow* okno) {
     teksturaMapy.clear(sf::Color(255,0,0,255));
-    std::set<ObiektNaMapie>::iterator it;
+    std::unordered_map<int,ObiektNaMapie*>::iterator it;
     for(it = obiekty.begin(); it != obiekty.end(); ++it){
 
-        it->rysuj(&teksturaMapy);
+       it->second->rysuj(&teksturaMapy);
 
     }
     teksturaMapy.display();
@@ -18,4 +18,9 @@ void Mapa::rysuj(sf::RenderWindow* okno) {
 
 Mapa::Mapa(float x, float y) {
     teksturaMapy.create(x,y);
+}
+
+
+void Mapa::dodajObiekt(ObiektNaMapie* nowy) {
+	obiekty.insert(std::pair<int,ObiektNaMapie*>(nowy->getId(), nowy));
 }
