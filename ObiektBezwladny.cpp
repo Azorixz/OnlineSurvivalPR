@@ -2,9 +2,9 @@
 #include <cmath>
 
 
-ObiektBezwladny::ObiektBezwladny(int id, float x, float y, sf::Texture* tekstura,
-		float predkosc, float kierunek)
-	:ObiektNaMapie(id, x, y, tekstura)
+ObiektBezwladny::ObiektBezwladny(int id, sf::Vector2f pozycja, sf::Texture* tekstura,
+		 float predkosc, float kierunek)
+	:ObiektNaMapie(id, pozycja, tekstura)
 {
 	this->predkosc = predkosc;
 	this->kierunek = kierunek;

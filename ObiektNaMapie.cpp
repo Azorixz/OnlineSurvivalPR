@@ -4,15 +4,15 @@
 
 #include "ObiektNaMapie.h"
 
+
+
 void  ObiektNaMapie::rysuj(sf::RenderTexture* cel) {
 	sprite.setPosition(pozycja);
     cel->draw(sprite);
 }
-
-ObiektNaMapie::ObiektNaMapie(int id, float x, float y, sf::Texture* tekstura) {
+ObiektNaMapie::ObiektNaMapie(int id, sf::Vector2f pozycja, sf::Texture* tekstura) {
 	this->id = id;
-	this->pozycja.x = x;
-	this->pozycja.y = y;
+	this->pozycja = pozycja;
 	ustawTeksture(tekstura);
 }
 

@@ -1,12 +1,13 @@
 #pragma once
-#include "E:\PR\Survival\OnlineSurvivalPR\ObiektNaMapie.h"
+#include "ObiektNaMapie.h"
+#include "ObiektKolizyjny.h"
 class ObiektBezwladny :
-	public ObiektNaMapie
+	public ObiektNaMapie 
 {
 public:
 	void aktualizacja(int);
 	//konstruktor
-	ObiektBezwladny(int, float, float, sf::Texture*, float, float);
+	ObiektBezwladny(int id, sf::Vector2f pozycja, sf::Texture* tekstura, float predkosc, float kierunek);
 	virtual ~ObiektBezwladny();
 protected:
 	float kierunek;

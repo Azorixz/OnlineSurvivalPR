@@ -7,13 +7,17 @@ using namespace std;
 int main(int argc, char* argv[]) {
 //takie fgd
     sf::RenderWindow okno(sf::VideoMode(800, 600), "Online Survival");
-
+	std::vector<sf::Vector2f> ksztaltKwadrt;
+	ksztaltKwadrt.push_back(sf::Vector2f(-25, -25));
+	ksztaltKwadrt.push_back(sf::Vector2f(25, -25));
+	ksztaltKwadrt.push_back(sf::Vector2f(25, 25));
+	ksztaltKwadrt.push_back(sf::Vector2f(-25, 25));
 	sf::RenderTexture t;
 	t.create(50, 50);
 	t.clear(sf::Color(0,0,255));
 	sf::Texture f = t.getTexture();
-	ObiektNaMapie r(1, 50, 70, &f);
-	ObiektNaMapie* r2 = new ObiektBezwladny(2, 100, 100, &f, 0.5, 0.5);
+	ObiektNaMapie r(1, sf::Vector2f(50,50), &f);
+	ObiektNaMapie* r2 = new ObiektBezwladny(2, sf::Vector2f(100,100), &f, 0.5, 0.5);
 	
     Mapa mapa(600,600);
 
