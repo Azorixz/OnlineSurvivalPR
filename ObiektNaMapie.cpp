@@ -18,5 +18,5 @@ ObiektNaMapie::ObiektNaMapie(int id, sf::Vector2f pozycja, sf::Texture* tekstura
 
 void ObiektNaMapie::ustawTeksture(sf::Texture* tekstura) {
 	sprite.setTexture(*tekstura);
-	sprite.setOrigin(tekstura->getSize().x / 2, tekstura->getSize().y / 2);
+	sprite.setOrigin(tekstura->getSize().x / 2.f, tekstura->getSize().y / 2.f);
 }

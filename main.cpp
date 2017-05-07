@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
 	ObiektNaMapie r(1, sf::Vector2f(50,50), &f);
 	ObiektNaMapie* r2 = new ObiektBezwladny(2, sf::Vector2f(100,100), &f, 0.5, 0.5);
 	
-    Mapa mapa(600,600);
+    Mapa mapa(sf::Vector2u(3122,2868), sf::Vector2u(600,600));
 
 	mapa.dodajObiekt(&r);
 	mapa.dodajObiekt(r2);
@@ -122,7 +122,7 @@ int main(int argc, char* argv[]) {
         }
 		r.obroc(0.1f);
 		((ObiektBezwladny*)r2)->aktualizacja(1);
-        okno.clear(sf::Color(0,255,0,255));
+        okno.clear(sf::Color(0,255,0));
         mapa.rysuj(&okno);
 		okno.draw(aKszt);
 		okno.draw(bKszt);
