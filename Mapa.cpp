@@ -5,6 +5,7 @@
 #include "Mapa.h"
 
 void Mapa::uruchomSprawdzanieKolizji(int liczbaWatkow) {
+	if (liczbaWatkow == 0)return;
 	int liczbaPlatow = liczbaPlatowNaX*liczbaPlatowNaY;
 	int odstep = liczbaPlatow / liczbaWatkow;
 	sprawdzanieKolizji = true;
@@ -92,6 +93,12 @@ Mapa::Mapa(sf::Vector2u rozmiarMapy, sf::Vector2u rozmiarKamery) {
 
 	for (int i = 0; i < liczbaPlatowNaX; i++) {
 		for (int j = 0; j < liczbaPlatowNaY; j++) {
+			platy[i][j]->dodajSasiadowStrefom();
+		}
+	}
+
+	for (int i = 0; i < liczbaPlatowNaX; i++) {
+		for (int j = 0; j < liczbaPlatowNaY; j++) {
 			if (rozmiarKamery.y < wymiaryPlata.y*(j -1))
 				break;
 			platy[i][j]->aktywuj();
@@ -100,7 +107,7 @@ Mapa::Mapa(sf::Vector2u rozmiarMapy, sf::Vector2u rozmiarKamery) {
 			break;
 	}
 
-	uruchomSprawdzanieKolizji(2);
+	uruchomSprawdzanieKolizji(1);
 }
 
 Mapa::~Mapa() {

@@ -18,20 +18,21 @@ StrefaMapy::~StrefaMapy()
 
 void StrefaMapy::sprawdzKolizje() {
 	obiektyAktywneMap_mutex.lock();
-	for (std::pair<int, ObiektKolizyjny*> obiektSprawdzany : obiektyAktywne) {
+	std::unordered_map<int, ObiektKolizyjny*>::iterator obiektSprawdzany = obiektyAktywne.begin();
+	while(obiektSprawdzany != obiektyAktywne.end()) {
 		for (std::pair<int, ObiektKolizyjny*> obiektInny : obiektyAktywne) {
-			if (obiektSprawdzany.first != obiektInny.first) {
-				if (obiektSprawdzany.second->czyKolizja(sf::Vector2f(0, 0), obiektSprawdzany.second)) {
-					obiektSprawdzany.second->akcjaNaKolizji(obiektInny.second);
-					obiektInny.second->akcjaNaKolizji(obiektSprawdzany.second);
+			if (obiektSprawdzany->first != obiektInny.first) {
+				if (obiektSprawdzany->second->czyKolizja(sf::Vector2f(0, 0), obiektSprawdzany->second)) {
+					obiektSprawdzany->second->akcjaNaKolizji(obiektInny.second);
+					obiektInny.second->akcjaNaKolizji(obiektSprawdzany->second);
 				}
 			}
 		}
 		obiektyStatyczneMap_mutex.lock();
 		for (std::pair<int, ObiektKolizyjny*> obiektInny : obiektyStatyczne) {
-			if (obiektSprawdzany.second->czyKolizja(sf::Vector2f(0, 0), obiektSprawdzany.second)) {
-				obiektSprawdzany.second->akcjaNaKolizji(obiektInny.second);
-				obiektInny.second->akcjaNaKolizji(obiektSprawdzany.second);
+			if (obiektSprawdzany->second->czyKolizja(sf::Vector2f(0, 0), obiektSprawdzany->second)) {
+				obiektSprawdzany->second->akcjaNaKolizji(obiektInny.second);
+				obiektInny.second->akcjaNaKolizji(obiektSprawdzany->second);
 			}
 		}
 		obiektyStatyczneMap_mutex.unlock();
@@ -39,50 +40,53 @@ void StrefaMapy::sprawdzKolizje() {
 			if (sasiedzi[i] != NULL) {
 				if (sasiedzi[i]->obiektyAktywneMap_mutex.try_lock()) {
 					for (std::pair<int, ObiektKolizyjny*> obiektInny : sasiedzi[i]->obiektyAktywne) {
-						if (obiektSprawdzany.second->czyKolizja(sf::Vector2f(0, 0), obiektSprawdzany.second)) {
-							obiektSprawdzany.second->akcjaNaKolizji(obiektInny.second);
-							obiektInny.second->akcjaNaKolizji(obiektSprawdzany.second);
+						if (obiektSprawdzany->second->czyKolizja(sf::Vector2f(0, 0), obiektSprawdzany->second)) {
+							obiektSprawdzany->second->akcjaNaKolizji(obiektInny.second);
+							obiektInny.second->akcjaNaKolizji(obiektSprawdzany->second);
 						}
 					}
 					sasiedzi[i]->obiektyAktywneMap_mutex.unlock();
 				}
 				if (sasiedzi[i]->obiektyStatyczneMap_mutex.try_lock()) {
 					for (std::pair<int, ObiektKolizyjny*> obiektInny : sasiedzi[i]->obiektyStatyczne) {
-						if (obiektSprawdzany.second->czyKolizja(sf::Vector2f(0, 0), obiektSprawdzany.second)) {
-							obiektSprawdzany.second->akcjaNaKolizji(obiektInny.second);
-							obiektInny.second->akcjaNaKolizji(obiektSprawdzany.second);
+						if (obiektSprawdzany->second->czyKolizja(sf::Vector2f(0, 0), obiektSprawdzany->second)) {
+							obiektSprawdzany->second->akcjaNaKolizji(obiektInny.second);
+							obiektInny.second->akcjaNaKolizji(obiektSprawdzany->second);
 						}
 					}
 					sasiedzi[i]->obiektyStatyczneMap_mutex.unlock();
 				}
 			}
 		}
-		/*sf::Vector2f pozycja = obiektSprawdzany.second->getPozycja();
+		sf::Vector2f pozycja = obiektSprawdzany->second->getPozycja();
 		if (pozycja.x < start.x) {
 			sasiedzi[LEWO]->obiektyAktywneMap_mutex.lock();
-			sasiedzi[LEWO]->obiektyAktywne.insert(obiektSprawdzany);
+			sasiedzi[LEWO]->obiektyAktywne.insert(*obiektSprawdzany);
 			sasiedzi[LEWO]->obiektyAktywneMap_mutex.unlock();
-			obiektyAktywne.erase(obiektSprawdzany.first);
+		    obiektSprawdzany = obiektyAktywne.erase(obiektSprawdzany);
 			
 		}
-		if (pozycja.x > koniec.x) {
+		else if (pozycja.x > koniec.x) {
 			sasiedzi[PRAWO]->obiektyAktywneMap_mutex.lock();
-			sasiedzi[PRAWO]->obiektyAktywne.insert(obiektSprawdzany);
+			sasiedzi[PRAWO]->obiektyAktywne.insert(*obiektSprawdzany);
 			sasiedzi[PRAWO]->obiektyAktywneMap_mutex.unlock();
-			obiektyAktywne.erase(obiektSprawdzany.first);
+			obiektSprawdzany = obiektyAktywne.erase(obiektSprawdzany);
 		}
-		if (pozycja.y < start.y) {
+		else if (pozycja.y < start.y) {
 			sasiedzi[GORA]->obiektyAktywneMap_mutex.lock();
-			sasiedzi[GORA]->obiektyAktywne.insert(obiektSprawdzany);
+			sasiedzi[GORA]->obiektyAktywne.insert(*obiektSprawdzany);
 			sasiedzi[GORA]->obiektyAktywneMap_mutex.unlock();
-			obiektyAktywne.erase(obiektSprawdzany.first);
+			obiektSprawdzany = obiektyAktywne.erase(obiektSprawdzany);
 		}
-		if (pozycja.y < koniec.x) {
+		else if (pozycja.y > koniec.x) {
 			sasiedzi[DOL]->obiektyAktywneMap_mutex.lock();
-			sasiedzi[DOL]->obiektyAktywne.insert(obiektSprawdzany);
+			sasiedzi[DOL]->obiektyAktywne.insert(*obiektSprawdzany);
 			sasiedzi[DOL]->obiektyAktywneMap_mutex.unlock();
-			obiektyAktywne.erase(obiektSprawdzany.first);
-		}*/
+			obiektSprawdzany = obiektyAktywne.erase(obiektSprawdzany);
+		}
+		else {
+			obiektSprawdzany++;
+		}
 	}
 	obiektyAktywneMap_mutex.unlock();
 }

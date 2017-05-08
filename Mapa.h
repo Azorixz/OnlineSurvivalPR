@@ -6,8 +6,8 @@
 
 #include <unordered_map>
 
-#define MAX_ROZMIAR_PLATA 1000;
-#define MIN_ROZMIAR_STREFY 1000;
+#define MAX_ROZMIAR_PLATA 500;
+#define MIN_ROZMIAR_STREFY 200;
 
 
 class Mapa {
