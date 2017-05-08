@@ -106,8 +106,6 @@ Mapa::Mapa(sf::Vector2u rozmiarMapy, sf::Vector2u rozmiarKamery) {
 		if (rozmiarKamery.x < wymiaryPlata.x*(i - 1))
 			break;
 	}
-
-	uruchomSprawdzanieKolizji(1);
 }
 
 Mapa::~Mapa() {

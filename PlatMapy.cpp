@@ -24,7 +24,7 @@ PlatMapy::PlatMapy(sf::Vector2f pozycja, sf::Vector2f wymiary)
 	for (int i = 0; i < liczbaStrefNaX; i++) {
 		strefy[i] = new StrefaMapy*[liczbaStrefNaY];
 		for (int j = 0; j < liczbaStrefNaY; j++) {
-			sf::Vector2f poczatekStrefy(wymiaryStrefy.x*i, wymiaryStrefy.y*j);
+			sf::Vector2f poczatekStrefy(wymiaryStrefy.x*i + pozycja.x, wymiaryStrefy.y*j + pozycja.y);
 			strefy[i][j] = new StrefaMapy(poczatekStrefy, poczatekStrefy + wymiaryStrefy);
 		}
 	}

@@ -68,6 +68,7 @@ int main(int argc, char* argv[]) {
 	okno.setActive(false);
 	volatile bool open = true;
 	std::thread wysw(wyswietlanie, &mapa, &okno, &open);
+	mapa.uruchomSprawdzanieKolizji(2);
 	while (okno.isOpen()) {
 		sf::Event Event;
 		while (okno.pollEvent(Event)) {

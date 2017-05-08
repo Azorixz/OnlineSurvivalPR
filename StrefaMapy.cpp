@@ -78,7 +78,7 @@ void StrefaMapy::sprawdzKolizje() {
 			sasiedzi[GORA]->obiektyAktywneMap_mutex.unlock();
 			obiektSprawdzany = obiektyAktywne.erase(obiektSprawdzany);
 		}
-		else if (pozycja.y > koniec.x) {
+		else if (pozycja.y > koniec.y) {
 			sasiedzi[DOL]->obiektyAktywneMap_mutex.lock();
 			sasiedzi[DOL]->obiektyAktywne.insert(*obiektSprawdzany);
 			sasiedzi[DOL]->obiektyAktywneMap_mutex.unlock();
