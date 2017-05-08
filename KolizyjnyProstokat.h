@@ -11,7 +11,7 @@ public:
 	bool czyKolizja(sf::Vector2f, KolizyjneKolo*);
 	bool czyKolizja(sf::Vector2f, KolizyjnyProstokat*);
 
-	KolizyjnyProstokat(sf::Vector2f wymiary, float kat, sf::Vector2f& pozycja);
+	KolizyjnyProstokat(int id, sf::Vector2f pozycja, sf::Vector2f wymiary, float kat);
 	virtual ~KolizyjnyProstokat();
 private:
 	friend class KolizyjneKolo;

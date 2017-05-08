@@ -1,7 +1,5 @@
 #include "Address.h"
 
-
-
 Address::Address()
 {
 	this->address = 0;

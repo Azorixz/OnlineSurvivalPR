@@ -1,12 +1,9 @@
 #include "Mapa.h"
 
 
-
 PlatMapy::PlatMapy(sf::Vector2f pozycja, sf::Vector2f wymiary)
 {
 	czyAktywny = false;
-	//pozycja wzglêdem "kamery", pozycja na teksturze kamery
-	this->pozycjaNaEkranie = pozycja;
 	//pozycja na mapie, wzgledem swiata gry
 	this->pozycjaNaMapie = pozycja; 
 	//obliczenie koordynatow konca wzgledem swaiata 
@@ -20,7 +17,7 @@ PlatMapy::PlatMapy(sf::Vector2f pozycja, sf::Vector2f wymiary)
 	liczbaStrefNaY = (int)wymiary.y / MIN_ROZMIAR_STREFY;
 	
 	//obliczenie wymiarow strefy
-	sf::Vector2f wymiaryStrefy(wymiary.x / liczbaStrefNaX, wymiary.y / liczbaStrefNaY);
+	wymiaryStrefy = sf::Vector2f(wymiary.x / liczbaStrefNaX, wymiary.y / liczbaStrefNaY);
 
 	//utworzenie stref
 	strefy = new StrefaMapy**[liczbaStrefNaX];
@@ -46,6 +43,14 @@ PlatMapy::~PlatMapy()
 		delete[] strefy[i];
 	}
 	delete[] strefy;
+}
+
+void PlatMapy::sprawdzKolizje() {
+	for (int i = 0; i < liczbaStrefNaX; i++) {
+		for (int j = 0; j < liczbaStrefNaY; j++) {
+			strefy[i][j]->sprawdzKolizje();
+		}
+	}
 }
 
 void PlatMapy::dodajSasiada(Kierunek k, PlatMapy* s) {
@@ -113,4 +118,32 @@ void PlatMapy::dodajSasiadowStrefom() {
 			}
 		}
 	}
+}
+
+
+void PlatMapy::dodajObiektAktywny(ObiektKolizyjny* nowy) {
+	sf::Vector2f pozycja = nowy->getPozycja();
+	int x = (int)(pozycja.x / wymiaryStrefy.x);
+	int y = (int)(pozycja.y / wymiaryStrefy.y);
+	if (x >= liczbaStrefNaX) x = liczbaStrefNaX - 1;
+	if (y >= liczbaStrefNaY) y = liczbaStrefNaY - 1;
+	strefy[x][y]->dodajObiektAktywny(nowy);
+}
+
+void PlatMapy::dodajObiektStatyczny(ObiektKolizyjny* nowy) {
+	sf::Vector2f pozycja = nowy->getPozycja();
+	int x = (int)(pozycja.x / wymiaryStrefy.x);
+	int y = (int)(pozycja.y / wymiaryStrefy.y);
+	if (x >= liczbaStrefNaX) x = liczbaStrefNaX - 1;
+	if (y >= liczbaStrefNaY) y = liczbaStrefNaY - 1;
+	strefy[x][y]->dodajObiektStatyczny(nowy);
+}
+void PlatMapy::rysuj(sf::RenderTexture* tekstura, sf::Vector2f pozycjaKamery) {
+	if (!czyAktywny)return;
+	for (int i = 0; i < liczbaStrefNaX; i++) {
+		for (int j = 0; j < liczbaStrefNaY; j++) {
+			strefy[i][j]->rysuj(tekstura, pozycjaKamery);
+		}
+	}
+
 }

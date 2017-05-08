@@ -1,15 +1,19 @@
 #include "KolizyjnyProstokat.h"
 #include "KolizyjneKolo.h"
 
-KolizyjnyProstokat::KolizyjnyProstokat(sf::Vector2f wymiary, float kat, sf::Vector2f &pozycja)
-	:ObiektKolizyjny(pozycja)
+KolizyjnyProstokat::KolizyjnyProstokat(int id, sf::Vector2f pozycja, sf::Vector2f wymiary, float kat)
+	:ObiektKolizyjny(id, pozycja, kat)
 {
 	wymiary.x /= 2;
 	wymiary.y /= 2;
-	wierzcholki[0] = pozycja + sf::Vector2f(-wymiary.x, -wymiary.y);
-	wierzcholki[1] = pozycja + sf::Vector2f(wymiary.x, -wymiary.y);
-	wierzcholki[2] = pozycja + sf::Vector2f(wymiary.x, wymiary.y);
-	wierzcholki[3] = pozycja + sf::Vector2f(-wymiary.x, wymiary.y);
+	wierzcholki[0] = pozycja + sf::Vector2f((-wymiary.x *cos(kat)) - (-wymiary.y * sin(kat)),
+											(-wymiary.x *sin(kat)) + (-wymiary.y * cos(kat)));
+	wierzcholki[1] = pozycja + sf::Vector2f((wymiary.x *cos(kat)) - (-wymiary.y * sin(kat)),
+											(wymiary.x *sin(kat)) + (-wymiary.y * cos(kat)));
+	wierzcholki[2] = pozycja + sf::Vector2f((wymiary.x *cos(kat)) - (wymiary.y * sin(kat)),
+											(wymiary.x *sin(kat)) + (wymiary.y * cos(kat)));
+	wierzcholki[3] = pozycja + sf::Vector2f((-wymiary.x *cos(kat)) - (wymiary.y * sin(kat)),
+											(-wymiary.x *sin(kat)) + (-wymiary.y * cos(kat)));
 }
 
 
@@ -23,7 +27,7 @@ sf::Vector2f KolizyjnyProstokat::kolizja(sf::Vector2f przesuniecie, ObiektKolizy
 }
 
 sf::Vector2f KolizyjnyProstokat::kolizja(sf::Vector2f przesuniecie, KolizyjneKolo* tenPierwszy) {
-	sf::Vector2f nowaPozycja = tenPierwszy->pozycjaRef +przesuniecie;
+	sf::Vector2f nowaPozycja = tenPierwszy->getPozycja() +przesuniecie;
 
 	if (iloczynSkalarny(nowaPozycja,wierzcholki[3], wierzcholki[0]) < 0) {
 		//srodek kola wzglednie ponad
